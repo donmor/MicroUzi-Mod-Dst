@@ -1,7 +1,7 @@
 name = "MicroUzi"
-version = "1.0.0.2"
+version = "2.0.0.1"
 description = [[
-乌兹微型冲锋枪(MicroUzi) 1.0
+乌兹微型冲锋枪(MicroUzi) 2.0
 
 ※MOD制作初心者
 ※大量API修改, 兼容性注意
@@ -11,7 +11,7 @@ description = [[
 ·保险/半自动/全自动三种模式
 ·可使用弹匣将子弹补满
 ·两种不同容量的弹匣: 标准(25发)或扩容(35发)
-·可配置单发子弹伤害
+·使用9mm子弹填充弹匣
 ]]
 author = "donmor"
 forumthread = ""
@@ -27,21 +27,6 @@ server_filter_tags = {
 }
 configuration_options =
 {
-	{
-		name = "damage",
-		label = "单发伤害",
-		options =
-		{
-			{description = "4", data = 4},
-			{description = "10", data = 10},
-			{description = "16", data = 16},
-			{description = "22", data = 22},
-			{description = "28", data = 28},
-			{description = "34", data = 34},
-		},
-		default = 10,
-	},
-	
 	{
 		name = "debug",
 		label = "测试模式",

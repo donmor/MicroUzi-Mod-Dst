@@ -69,8 +69,12 @@ local function debugcommand(inst, data)
 	end
 end
 
-local function onreloading(inst)
-	inst.SoundEmitter:PlaySound("uzi/main/reload")
+local function onreloading(inst, slot)
+	if slot then
+		inst.SoundEmitter:PlaySound("uzi/main/reload")
+	else
+		inst.SoundEmitter:PlaySound("uzi/main/selector")
+	end
 end
 
 local function onfire(inst)
@@ -79,10 +83,6 @@ end
 
 local function onselector(inst)
 	inst.SoundEmitter:PlaySound("uzi/main/selector")
-end
-
-local function offsetfn(count)
-	return 4 * (1 - math.pow(0.5, count * 0.8))
 end
 
 local function fn()
@@ -131,13 +131,18 @@ local function fn()
 	inst.components.gunutils:SetCanSingle(true)
 	inst.components.gunutils:SetHudImage(hudatlas, hudimage)
 	inst.components.gunutils:SetAmmoType(TUNING.MGUNAMMOTYPES.UZI)
+	inst.components.gunutils:SetGunBullets(TUNING.MGUNBULLETTYPES.NATO_9MM)
 	inst.components.gunutils:SetRange(10)
 	inst.components.gunutils:SetAutoIntervalMult(TUNING.UZI_AUTOINTERVALMULT)
 	inst.components.gunutils:SetSemiIntervalMult(TUNING.UZI_SEMIINTERVALMULT)
 	inst.components.gunutils:SetReloadingFn(onreloading)
 	inst.components.gunutils:SetOnFireFn(onfire)
 	inst.components.gunutils:SetOnSelectorFn(onselector)
-	inst.components.gunutils:SetOffsetFn(offsetfn)	
+	inst.components.gunutils:SetOffsetFn(function(count)
+		local owner = inst.components.inventoryitem:GetGrandOwner()
+		local mental = owner ~= nil and owner.components.sanity and owner.components.sanity:GetPercent()
+		return 8 * (1 - math.pow(0.5, count * 0.8)) + 4 * (1 - mental)
+	end)	
 	if TUNING.UZI_DEBUG then
 		inst:ListenForEvent("debugcommand", debugcommand)
 	end

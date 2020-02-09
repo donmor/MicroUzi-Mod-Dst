@@ -5,6 +5,10 @@ local assets =
 	Asset( "ANIM", "anim/uzi_ammo.zip" ),
 }
 
+local function onrefilled(inst, bullet)
+	inst.SoundEmitter:PlaySound("uzi/main/selector")
+end
+
 local function fn()
 	local inst = CreateEntity()
 
@@ -32,15 +36,16 @@ local function fn()
 	inst.components.inventoryitem.imagename = "uzi_ammo"
 	inst.components.inventoryitem.atlasname = "images/inventoryimages/uzi_ammo.xml"
 	
-	inst:AddComponent("stackable")
-	inst.components.stackable.maxsize = TUNING.STACK_SIZE_LARGEITEM
-	
 	inst:AddComponent("gunammo")
 	inst.components.gunammo:SetMaxValue(TUNING.UZI_AMMO)
-	inst.components.gunammo:SetValue(TUNING.UZI_AMMO)
+	inst.components.gunammo:SetValue(0)
 	inst.components.gunammo:SetType(TUNING.MGUNAMMOTYPES.UZI)
-	inst.components.gunammo:SetBullet("uzi_bullet")
-	inst.components.gunammo:SetDamage(TUNING.UZI_BULLET_DAMAGE)
+	inst.components.gunammo:SetBullet("bullet_nato_9mm")
+	inst.components.gunammo:SetDamage(TUNING.NATO_9MM_DAMAGE)
+	inst.components.gunammo:SetRecyclable(true)
+	inst.components.gunammo:SetDecomposable(true)
+	inst.components.gunammo:SetOnRefilledFn(onrefilled)
+	inst.components.gunammo:SetGunBullets("bullet_nato_9mm_item")
 			
 	return inst
 end
